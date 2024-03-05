@@ -19,4 +19,17 @@ module.exports.custom = {
   // stripeSecret: 'sk_test_Zzd814nldl91104qor5911gjald',
   // …
 
+  nodemailer: {
+    transporter: {
+      service: 'Gmail', // or your email service provider
+      auth: {
+        user: '20bt04004@gsfcuniversity.ac.in',
+        pass: 'czsnsqnihezxgxma',
+      },
+    },
+    defaults: {
+      from: '20bt04004@gsfcuniversity.ac.in',
+    },
+  },
+
 };
