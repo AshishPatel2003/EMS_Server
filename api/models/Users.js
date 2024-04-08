@@ -28,6 +28,10 @@ module.exports = {
     password: {
       type: 'string',
       required: true,
+    },
+    accessToken: {
+      type: 'string',
+      required: false
     }
   },
 };

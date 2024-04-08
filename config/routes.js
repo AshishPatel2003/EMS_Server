@@ -13,4 +13,19 @@ module.exports.routes = {
     'POST /signup' : 'UserController.signup',
     'POST /login' : 'UserController.login',
 
+    'GET /role': 'RoleController.getRoles',
+    'PUT /role/add': 'RoleController.addRole',
+    'PATCH /role/:id/update': 'RoleController.updateRole',
+    'DELETE /role/:id/delete': 'RoleController.deleteRole',
+
+    'GET /permission': 'PermissionController.getPermissions',
+    'PUT /permission/add': 'PermissionController.addPermission',
+    'PATCH /permission/:id/update': 'PermissionController.updatePermission',
+    'DELETE /permission/:id/delete': 'PermissionController.deletePermission',
+
+    'GET /role/:id/permission': 'AccessMappingController.getAccessMappings',
+    'PUT /role/:id/permission/:permissionId/add': 'AccessMappingController.addAccessMapping',
+    // 'PATCH /permission/:id/update': 'AccessMappingController.updateAccessMapping',
+    'DELETE /role/:id/permission/:permissionId/delete': 'AccessMappingController.deleteAccessMapping',
+
 };

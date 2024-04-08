@@ -2,7 +2,7 @@ const ResponseCode = {
     OK: 200,
     CREATED: 201,
     BAD_REQUEST: 400,
-    UNAUTHORISED: 401,
+    UNAUTHORIZED: 401,
     FORBIDDEN: 403,
     NOT_FOUND: 404,
     CONFLICT: 409,
@@ -19,6 +19,11 @@ const Dependencies = {
     ejs: require("ejs"),
     path: require("path"),
 };
+
+const DashboardLink = [
+    "Accounts",
+    "Event"
+]
 
 const PublicRoutes = [
     '/login',

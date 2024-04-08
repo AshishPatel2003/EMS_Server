@@ -18,5 +18,8 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
+  "RoleController": {
+    "addRole": ["isLoggedIn"]
+  }
 
 };
