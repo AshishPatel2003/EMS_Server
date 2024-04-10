@@ -7,13 +7,17 @@
 
 module.exports = {
 
-    attributes: {
-  
-      role: {
-        model: "roles"
-      },
-      permission: {
-        model: 'permissions'
-      },
+  attributes: {
+
+    message: {
+      type: 'string',
+      required: true,
     },
-  };
+
+    // Foreign keys
+    event: {
+      model: "events"
+    },
+  },
+};
+

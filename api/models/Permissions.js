@@ -11,6 +11,11 @@ module.exports = {
       permissionName: {
         type: 'string',
         required: true,
+      },
+
+      accessMapping: {
+        collection: "accessmappings",
+        via: "permission"
       }
       
     },

@@ -16,7 +16,7 @@ module.exports = {
         try {
             let permissions_records = await AccessMappings.find({
                 roleId: req.params.id,
-            });
+            }).populate('role').populate('permission');
             if (permissions_records) {
                 res.status(ResponseCode.OK).json(permissions_records);
             }

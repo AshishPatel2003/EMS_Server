@@ -7,13 +7,14 @@
 
 module.exports = {
 
-    attributes: {
-  
-      role: {
-        model: "roles"
-      },
-      permission: {
-        model: 'permissions'
-      },
+  attributes: {
+
+    event: {
+      model: 'events'
     },
-  };
+    resource: {
+      model: 'resources'
+    }
+  },
+};
+

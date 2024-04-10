@@ -19,7 +19,21 @@ module.exports.policies = {
 
   // '*': true,
   "RoleController": {
-    "addRole": ["isLoggedIn"]
+    "getRoles": ["isLoggedIn", "isValidAdminRole"],
+    "addRole": ["isLoggedIn", "isValidAdminRole"],
+    "updateRole": ["isLoggedIn", "isValidAdminRole"],
+    "deleteRole": ["isLoggedIn", "isValidAdminRole"],
+  },
+  "PermissionController": {
+    "getPermissions": ["isLoggedIn", "isValidAdminRole"],
+    "addPermission": ["isLoggedIn", "isValidAdminRole"],
+    "updatePermission": ["isLoggedIn", "isValidAdminRole"],
+    "deletePermission": ["isLoggedIn", "isValidAdminRole"],
+  },
+  "AccessMappingController": {
+    "getAccessMappings": ["isLoggedIn", "isValidAdminRole"],
+    "addAccessMapping": ["isLoggedIn", "isValidAdminRole"],
+    "deleteAccessMapping": ["isLoggedIn", "isValidAdminRole"],
   }
 
 };

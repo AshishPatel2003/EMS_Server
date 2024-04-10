@@ -32,6 +32,32 @@ module.exports = {
     accessToken: {
       type: 'string',
       required: false
+    },
+
+
+
+    // Foreign keys
+    role: {
+      model: "roles"
+    },
+
+
+    // Access Permission
+    eventmember: {
+      collection: "eventmembers",
+      via: 'user' 
+    },
+    registration: {
+      collection: "registrations",
+      via: 'user' 
+    },
+    sender: {
+      collection: "notifications",
+      via: 'sender'
+    }, 
+    receiver: {
+      collection: "notifications",
+      via: 'receiver'
     }
   },
 };

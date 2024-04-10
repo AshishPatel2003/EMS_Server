@@ -13,6 +13,8 @@ dotenv.config();
 
 module.exports = {
 
+
+
     // Signup Controller
     signup: async (req, res) => {
         console.log(req.body);
@@ -21,26 +23,33 @@ module.exports = {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         try {
-            await Users.findOrCreate(
-                { email: email },
-                {
-                    firstName: firstName,
-                    middleName: middleName,
-                    lastName: lastName,
-                    email: email,
-                    password: hashedPassword,
+            let role_record = await Roles.findOne({ roleName: "Student" });
+            console.log(role_record);
+            if (role_record) {
+                await Users.findOrCreate(
+                    { email: email },
+                    {
+                        firstName: firstName,
+                        middleName: middleName,
+                        lastName: lastName,
+                        email: email,
+                        password: hashedPassword,
+                        role: role_record.id
                 }
-            ).exec((error, user, wasCreated) => {
-                if (error) throw error;
-                if (wasCreated)
-                    res
-                        .status(ResponseCode.OK)
-                        .json({ type: "success", message: "Signup Successful..." });
-                else
-                    res
-                        .status(ResponseCode.CONFLICT)
-                        .json({ type: "error", message: "User already exists" });
-            });
+                ).exec((error, user, wasCreated) => {
+                    if (error) throw error;
+                    if (wasCreated)
+                        res
+                            .status(ResponseCode.OK)
+                            .json({ type: "success", message: "Signup Successful..." });
+                    else
+                        res
+                            .status(ResponseCode.CONFLICT)
+                            .json({ type: "error", message: "User already exists" });
+                });
+            } else {
+                res.status(ResponseCode.NOT_FOUND).json({ type: "error", message: "Role not found" });
+            }
         } catch (error) {
             console.log("SignUp Error => ", error.message);
             res
@@ -56,13 +65,18 @@ module.exports = {
 
         try {
             const user = await Users.findOne({ email: email });
+            console.log(user);
             if (user) {
-                if (bcrypt.compare(password, user.password)) {
+                console.log(await bcrypt.compare(password, user.password))
+                if (await bcrypt.compare(password, user.password)) {
+                    
                     const token = await jwt.sign(
                         {
                             userId: user.id,
                             email: email,
                             firstName: user.firstName,
+                            role: user.role
+                            
                         },
                         process.env.JWT_SECRET_KEY,
                         { expiresIn: "24h" }
@@ -88,29 +102,29 @@ module.exports = {
                             //     data: { name: 'John Doe' }, // Data to pass to the EJS template
                             // });
 
-                            const data = {
-                                to: email,
-                                subject: "Welcome to the Application",
-                                template: "email", // Assuming you have a 'welcome.ejs' template in 'views/emails'
-                                data: { name: user.firstName }, // Data to pass to the EJS template
-                            };
+                            // const data = {
+                            //     to: email,
+                            //     subject: "Welcome to the Application",
+                            //     template: "email", // Assuming you have a 'welcome.ejs' template in 'views/emails'
+                            //     data: { name: user.firstName }, // Data to pass to the EJS template
+                            // };
 
-                            const transporter = nodemailer.createTransport(
-                                sails.config.custom.nodemailer.transporter
-                            );
+                            // const transporter = nodemailer.createTransport(
+                            //     sails.config.custom.nodemailer.transporter
+                            // );
 
-                            const templatePath = path.resolve(
-                                __dirname,
-                                `./../emailTemplates/${data.template}.ejs`
-                            );
-                            const emailHtml = await ejs.renderFile(templatePath, data.data);
+                            // const templatePath = path.resolve(
+                            //     __dirname,
+                            //     `./../emailTemplates/${data.template}.ejs`
+                            // );
+                            // const emailHtml = await ejs.renderFile(templatePath, data.data);
 
-                            const mailOptions = {
-                                from: sails.config.custom.nodemailer.defaults.from,
-                                to: data.to,
-                                subject: data.subject,
-                                html: emailHtml,
-                            };
+                            // const mailOptions = {
+                            //     from: sails.config.custom.nodemailer.defaults.from,
+                            //     to: data.to,
+                            //     subject: data.subject,
+                            //     html: emailHtml,
+                            // };
 
                             // try {
                             //     return this.success('Email sent successfully.');
@@ -150,7 +164,7 @@ module.exports = {
                     }
                 } else {
                     res
-                        .status(ResponseCode.UNAUTHORISED)
+                        .status(ResponseCode.UNAUTHORIZED)
                         .json({ type: "error", message: "User not found" });
                 }
             } else {

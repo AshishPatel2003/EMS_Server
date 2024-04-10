@@ -7,13 +7,17 @@
 
 module.exports = {
 
-    attributes: {
-  
-      role: {
-        model: "roles"
-      },
-      permission: {
-        model: 'permissions'
-      },
+  attributes: {
+
+    event: {
+      model: 'events'
     },
-  };
+    user: {
+      model: 'users'
+    },
+    eventrole: {
+      model: 'eventroles'
+    }
+  },
+};
+

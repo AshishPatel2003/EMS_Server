@@ -20,6 +20,14 @@ const Dependencies = {
     path: require("path"),
 };
 
+const SuperAdmin = {
+    firstName: "Super",
+    middleName: " ",
+    lastName: "Admin",
+    email: "ashishkumarpatel2003@gmail.com",
+    password: "Ashish2003$"
+}
+
 const DashboardLink = [
     "Accounts",
     "Event"
@@ -33,5 +41,6 @@ const PublicRoutes = [
 module.exports.constants = {
     ResponseCode,
     Dependencies,
-    PublicRoutes
+    PublicRoutes,
+    SuperAdmin
 };

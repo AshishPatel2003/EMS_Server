@@ -25,7 +25,6 @@ module.exports.routes = {
 
     'GET /role/:id/permission': 'AccessMappingController.getAccessMappings',
     'PUT /role/:id/permission/:permissionId/add': 'AccessMappingController.addAccessMapping',
-    // 'PATCH /permission/:id/update': 'AccessMappingController.updateAccessMapping',
     'DELETE /role/:id/permission/:permissionId/delete': 'AccessMappingController.deleteAccessMapping',
 
 };

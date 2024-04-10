@@ -7,13 +7,16 @@
 
 module.exports = {
 
-    attributes: {
-  
-      role: {
-        model: "roles"
-      },
-      permission: {
-        model: 'permissions'
-      },
+  attributes: {
+
+    eventRoleName: {
+      type: 'string',
+      required: true,
     },
-  };
+    eventMember: {
+      collection: "eventmembers",
+      via: 'eventrole'
+    }
+  },
+};
+
