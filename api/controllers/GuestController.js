@@ -1,5 +1,5 @@
 /**
- * EventController
+ * GuestController
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
@@ -12,13 +12,12 @@ const ResponseCode = constants.ResponseCode;
 dotenv.config();
 
 module.exports = {
-    getEvents: async (req, res) => {
+    getGuests: async (req, res) => {
         try {
-            let allRecords = await Events.find()
-                .populate("guest")
-                .populate("suggestion")
-                .populate("eventmember")
-                .populate("registration");
+            let allRecords = await Guests.find({
+                event: req.params.eventId
+            })
+                .populate("event")
             if (allRecords) {
                 res.status(ResponseCode.OK).json(allRecords);
             }

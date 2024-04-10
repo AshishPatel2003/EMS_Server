@@ -46,7 +46,7 @@ module.exports = {
       required: false
     },
     maxSeats: {
-      type: 'string',
+      type: 'number',
       required: false
     },
     paid: {
@@ -54,7 +54,7 @@ module.exports = {
       required: false
     },
     ticketPricing: {
-      type: 'string',
+      type: 'number',
       required: false
     },
     status: {
