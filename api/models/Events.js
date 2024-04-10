@@ -1,5 +1,5 @@
 /**
- * User.js
+ * Events.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -69,14 +69,8 @@ module.exports = {
 
 
 
-
-    // Foreign keys
-    // role: {
-    //   model: "roles"
-    // },
-
-
-    // Access Permission
+    // Access
+   
     eventmember: {
       collection: "eventmembers",
       via: 'event' 
@@ -92,7 +86,11 @@ module.exports = {
     registration: {
       collection: "registrations",
       via: 'event'
-    }
+    },
+    guest: {
+      collection: "guests",
+      via: 'event' 
+    },
   },
 };
 

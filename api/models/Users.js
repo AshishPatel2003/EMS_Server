@@ -42,7 +42,7 @@ module.exports = {
     },
 
 
-    // Access Permission
+    // Access
     eventmember: {
       collection: "eventmembers",
       via: 'user' 

@@ -10,35 +10,35 @@
 
 module.exports.routes = {
 
-    // User
+    // User - Complete
     'POST /signup' : 'UserController.signup',
     'POST /login' : 'UserController.login',
 
-    // Role
+    // Role - Complete
     'GET /role': 'RoleController.getRoles',
     'PUT /role/add': 'RoleController.addRole',
     'PATCH /role/:id/update': 'RoleController.updateRole',
     'DELETE /role/:id/delete': 'RoleController.deleteRole',
 
-    // Permission
+    // Permission - Complete
     'GET /permission': 'PermissionController.getPermissions',
     'PUT /permission/add': 'PermissionController.addPermission',
     'PATCH /permission/:id/update': 'PermissionController.updatePermission',
     'DELETE /permission/:id/delete': 'PermissionController.deletePermission',
 
-    // Access mapping
+    // Access mapping - Complete
     'GET /role/:id/permission': 'AccessMappingController.getAccessMappings',
     'PUT /role/:id/permission/:permissionId/add': 'AccessMappingController.addAccessMapping',
     'DELETE /role/:id/permission/:permissionId/delete': 'AccessMappingController.deleteAccessMapping',
 
 
-    // Event Roles
+    // Event Roles - Complete
     'GET /event-role': 'EventRoleController.getEventRoles',
     'PUT /event-role/add': 'EventRoleController.addEventRole',
     'PATCH /event-role/:id/update': 'EventRoleController.updateEventRole',
     'DELETE /event-role/:id/delete': 'EventRoleController.deleteEventRole',
 
-    // Event
+    // Event 
     'GET /event': 'EventController.getEvents',
     'PUT /event/add': 'EventController.addEvent',
     'PATCH /event/:eventId/update': 'EventController.updateEvent',

@@ -1,5 +1,5 @@
 /**
- * User.js
+ * Resources.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -14,7 +14,7 @@ module.exports = {
       required: true,
     },
   
-    // Access Permission
+    // Access
     eventresource: {
       collection: "eventresources",
       via: 'resource' 
