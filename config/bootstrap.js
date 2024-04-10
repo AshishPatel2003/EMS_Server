@@ -29,39 +29,43 @@ module.exports.bootstrap = async function (cb) {
   await Roles.findOrCreate(
     { roleName: "Admin" },
     { roleName: "Admin" }
-  ).exec((error, role, wasCreated) => {
+  ).exec(async (error, role, wasCreated) => {
     if (error) throw error;
-    if (wasCreated)
+    if (wasCreated){
       console.log("Admin Role created successfully");
+    }
+      await Roles.findOrCreate(
+        { roleName: "Student" },
+        { roleName: "Student" }
+      ).exec(async (error, role, wasCreated) => {
+        if (error) throw error;
+        if (wasCreated){
+          console.log("Student Role created successfully");
+        }
+        let role_record = await Roles.findOne({
+          roleName: "Admin"
+        });
+        if (role_record) {
+          await Users.findOrCreate(
+            { email: sails.config.constants.SuperAdmin.email },
+            {
+              firstName: sails.config.constants.SuperAdmin.firstName,
+              lastName: sails.config.constants.SuperAdmin.lastName,
+              middleName: sails.config.constants.SuperAdmin.middleName,
+              email: sails.config.constants.SuperAdmin.email,
+              password: await sails.config.constants.Dependencies.bcrypt.hash(sails.config.constants.SuperAdmin.password, 10),
+              role: role_record.id
+            }
+          ).exec((error, user, wasCreated) => {
+            if (error) throw error;
+            if (wasCreated)
+              console.log("Admin created successfully");
+          });
+        }
+      });
   });
-  await Roles.findOrCreate(
-    { roleName: "Student" },
-    { roleName: "Student" }
-  ).exec((error, role, wasCreated) => {
-    if (error) throw error;
-    if (wasCreated)
-      console.log("Student Role created successfully");
-  });
-  let role_record = await Roles.findOne({
-    roleName: "Admin"
-  });
-  if (role_record) {
-    await Users.findOrCreate(
-      { email: sails.config.constants.SuperAdmin.email },
-      {
-        firstName: sails.config.constants.SuperAdmin.firstName,
-        lastName: sails.config.constants.SuperAdmin.lastName,
-        middleName: sails.config.constants.SuperAdmin.middleName,
-        email: sails.config.constants.SuperAdmin.email,
-        password: await sails.config.constants.Dependencies.bcrypt.hash(sails.config.constants.SuperAdmin.password, 10),
-        role: role_record.id
-      }
-    ).exec((error, user, wasCreated) => {
-      if (error) throw error;
-      if (wasCreated)
-        console.log("Admin created successfully");
-    });
-  }
+  
+  
 
   sails.config.port = 2000;
 

@@ -15,10 +15,10 @@ module.exports = async (req, res, proceed) => {
             if (role_record.roleName === "Admin") {
                 proceed();
             } else {
-                return res.status(ResponseCode.FORBIDDEN).json({ "type": "error", "message": "Invalid role"});
+                return res.status(ResponseCode.FORBIDDEN).json({ "type": "error", "message": "Unauthorized"});
             }
         } else {
-            return res.status(ResponseCode.NOT_FOUND).json({ "type": "error", "message": "Invalid role"});
+            return res.status(ResponseCode.NOT_FOUND).json({ "type": "error", "message": "Unauthorized"});
         }
     } catch (error) {
         return res.status(ResponseCode.INTERNAL_SERVER_ERROR).json({ "type": "error", "message": error.message });

@@ -34,6 +34,12 @@ module.exports.policies = {
     "getAccessMappings": ["isLoggedIn", "isValidAdminRole"],
     "addAccessMapping": ["isLoggedIn", "isValidAdminRole"],
     "deleteAccessMapping": ["isLoggedIn", "isValidAdminRole"],
-  }
+  },
+  "EventRoleController": {
+    "getEventRoles": ["isLoggedIn", "isValidAdminRole"],
+    "addEventRole": ["isLoggedIn", "isValidAdminRole"],
+    "updateEventRole": ["isLoggedIn", "isValidAdminRole"],
+    "deleteEventRole": ["isLoggedIn", "isValidAdminRole"],
+  },
 
 };

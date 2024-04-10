@@ -82,19 +82,29 @@ module.exports = {
     deleteRole: async (req, res) => {
         console.log(req.params.id);
         try {
-            const delete_record = await Roles.destroyOne({
-                id: req.params.id
-            })
-            if (delete_record) {
-                res.status(ResponseCode.OK).json({
-                    "type": "sucess",
-                    "message": "Role Deleted Successfully"
-                })
+            const getRecord = await Roles.find({
+                id: req.params.id,
+            });
+            if (Object.keys(getRecord).length > 0) {
+                const deleteRecord = await Roles.destroyOne({
+                    id: req.params.id,
+                });
+                if (deleteRecord) {
+                    res.status(ResponseCode.OK).json({
+                        type: "success",
+                        message: "Role Deleted Successfully",
+                    });
+                } else {
+                    res.status(ResponseCode.SERVER_ERROR).json({
+                        type: "error",
+                        message: "Failed to Delete Role",
+                    });
+                }
             } else {
-                res.status(ResponseCode.SERVER_ERROR).json({
-                    "type": "error",
-                    "message": "Failed to Delete Role"
-                })
+                res.status(ResponseCode.NOT_FOUND).json({
+                    type: "error",
+                    message: "Role not found",
+                });
             }
         } catch (error) {
             console.log("Error => ", error.message)
