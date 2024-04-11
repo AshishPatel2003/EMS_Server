@@ -12,13 +12,13 @@ module.exports = async (req, res, proceed) => {
             id: req.user.role
         });
         if (role_record) {
-            if (role_record.roleName === "Admin") {
-                proceed();
-            } else {
-                return res.status(ResponseCode.FORBIDDEN).json({ "type": "error", "message": "Unauthorized"});
-            }
+            console.log("Rolename => ", role_record.roleName);
+            console.log("Role Checked")
+
+            req.user.roleName = role_record.roleName;
+            proceed();
         } else {
-            return res.status(ResponseCode.NOT_FOUND).json({ "type": "error", "message": "Unauthorized"});
+            return res.status(ResponseCode.NOT_FOUND).json({ "type": "error", "message": "Unauthorized" });
         }
     } catch (error) {
         return res.status(ResponseCode.INTERNAL_SERVER_ERROR).json({ "type": "error", "message": error.message });

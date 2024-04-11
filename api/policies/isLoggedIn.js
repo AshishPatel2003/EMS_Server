@@ -14,10 +14,12 @@ module.exports = async (req, res, proceed) => {
     if (!token) {
         return res.status(ResponseCode.UNAUTHORIZED).json({"type": "error", "message": "Unauthorized..."});
     }
+    console.log("Token is : ", token);
     // Verify the token.
     try {
         // Check if there is any user with this token.
         const tokenfound = await Users.findOne({ accessToken: token });
+        console.log("TokenFound:", tokenfound)
         if (tokenfound) {
             
             const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);

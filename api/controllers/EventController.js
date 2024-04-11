@@ -15,10 +15,11 @@ module.exports = {
     getEvents: async (req, res) => {
         try {
             let allRecords = await Events.find()
-                .populate("guest")
+                .populate("speaker")
                 .populate("suggestion")
                 .populate("eventmember")
-                .populate("registration");
+                .populate("registration")
+                .populate('eventresource');
             if (allRecords) {
                 res.status(ResponseCode.OK).json(allRecords);
             }
@@ -31,20 +32,63 @@ module.exports = {
         const { eventName } = req.body;
 
         try {
-            let event = await Events.create({
-                eventName: eventName,
-            }).fetch();
+            await Events.findOrCreate(
+                {
+                    eventName: eventName,
+                    status: "Initiated",
+                },
+                {
+                    eventName: eventName,
+                    status: "Initiated",
+                }
+            ).exec(async (error, event, wasCreated) => {
+                if (error) throw error;
+                if (wasCreated) {
+                    let eventRoleRecord = await EventRoles.findOne({
+                        eventRoleName: "Event Organizer",
+                    });
+                    console.log("Addevent : event=>",event)
+                    console.log("Addevent : role=>",eventRoleRecord)
 
-            if (event)
-                res.status(ResponseCode.OK).json({
-                    type: "success",
-                    message: "Event Created Successful...",
-                });
-            else
-                res.status(ResponseCode.CONFLICT).json({
-                    type: "error",
-                    message: "Event already exists",
-                });
+                    if (eventRoleRecord) {
+                        await EventMembers.findOrCreate(
+                            {
+                                user: req.user.userId,
+                                event: event.id,
+                                eventrole: eventRoleRecord.id,
+                            },
+                            {
+                                user: req.user.userId,
+                                event: event.id,
+                                eventrole: eventRoleRecord.id,
+                            }
+                        ).exec((error, eventMember, wasCreated) => {
+                            if (error) throw error;
+                            if (wasCreated)
+                                res.status(ResponseCode.OK).json({
+                                    type: "success",
+                                    message:
+                                        "Event Initiated Created Successful...",
+                                });
+                            else
+                                res.status(ResponseCode.CONFLICT).json({
+                                    type: "error",
+                                    message: "Event Member already exists",
+                                });
+                        });
+                    } else {
+                        res.status(ResponseCode.CONFLICT).json({
+                            type: "error",
+                            message: "Event Organizer Role not found",
+                        });
+                    }
+                } else {
+                    res.status(ResponseCode.CONFLICT).json({
+                        type: "error",
+                        message: "Event already initiated",
+                    });
+                }
+            });
         } catch (error) {
             console.log("Event Creation Error => ", error.message);
             res.status(ResponseCode.SERVER_ERROR).json({
@@ -55,11 +99,39 @@ module.exports = {
     },
 
     updateEvent: async (req, res) => {
-        const { eventName, description, bannerImg, cardImg, date, startTime, endTime, venue, showSeats, maxSeats, paid, ticketPricing, budget } = req.body;
+        const {
+            eventName,
+            description,
+            bannerImg,
+            cardImg,
+            date,
+            startTime,
+            endTime,
+            venue,
+            showSeats,
+            maxSeats,
+            paid,
+            ticketPricing,
+            budget,
+        } = req.body;
 
         try {
-            let updateEvent = await Events.updateOne({ id: req.params.eventId }).set({
-                description: description, bannerImg: bannerImg, cardImg: cardImg, date: date, startTime: startTime, endTime: endTime, venue:venue, showSeats : showSeats, maxSeats: maxSeats, paid: paid, ticketPricing: ticketPricing, status: "Created", budget: budget
+            let updateEvent = await Events.updateOne({
+                id: req.params.eventId,
+            }).set({
+                description: description,
+                bannerImg: bannerImg,
+                cardImg: cardImg,
+                date: date,
+                startTime: startTime,
+                endTime: endTime,
+                venue: venue,
+                showSeats: showSeats,
+                maxSeats: maxSeats,
+                paid: paid,
+                ticketPricing: ticketPricing,
+                status: "Created",
+                budget: budget,
             });
 
             if (updateEvent) {
@@ -70,7 +142,7 @@ module.exports = {
             } else {
                 res.status(ResponseCode.SERVER_ERROR).json({
                     type: "error",
-                    message: "Failed to update role",
+                    message: "Failed to update event",
                 });
             }
         } catch (error) {
@@ -85,11 +157,14 @@ module.exports = {
     deleteEvent: async (req, res) => {
         console.log(req.params.eventId);
         try {
-            const record = await Events.find({
+            const record = await Events.findOne({
                 id: req.params.eventId,
             });
             if (Object.keys(record).length > 0) {
-                if (record.status=="Approved" || record.status == "Concluded") {
+                if (
+                    record.status == "Approved" ||
+                    record.status == "Concluded"
+                ) {
                     res.status(ResponseCode.BAD_REQUEST).json({
                         type: "error",
                         message: "Can't Delete Event",
@@ -99,10 +174,20 @@ module.exports = {
                         id: req.params.eventId,
                     });
                     if (deleteRecord) {
-                        res.status(ResponseCode.OK).json({
-                            type: "success",
-                            message: "Event Deleted Successfully",
-                        });
+                        const deleteMember = await EventMemberController.destroy({
+                            event: req.params.eventId
+                        })
+                        if (deleteMember) {
+                            res.status(ResponseCode.OK).json({
+                                type: "success",
+                                message: "Event Deleted Successfully",
+                            });
+                        } else {
+                            res.status(ResponseCode.SERVER_ERROR).json({
+                                type: "error",
+                                message: "Failed to Delete Event",
+                            });
+                        }
                     } else {
                         res.status(ResponseCode.SERVER_ERROR).json({
                             type: "error",

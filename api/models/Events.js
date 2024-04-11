@@ -57,6 +57,11 @@ module.exports = {
       type: 'number',
       required: false
     },
+    // Initiated: when created
+    // Created: when infor updated first time.
+    // Pending: when event proposal submitted.
+    // Approved: when event proposal accepted - volunter add, participation start
+    // Concluded: when event finished. block delete volunteer, block participant addition.
     status: {
       type: 'string',
       required: false
@@ -75,7 +80,7 @@ module.exports = {
       collection: "eventmembers",
       via: 'event' 
     },
-    eventresources: {
+    eventresource: {
       collection: "eventresources",
       via: 'event'
     },
@@ -87,8 +92,8 @@ module.exports = {
       collection: "registrations",
       via: 'event'
     },
-    guest: {
-      collection: "guests",
+    speaker: {
+      collection: "speakers",
       via: 'event' 
     },
   },

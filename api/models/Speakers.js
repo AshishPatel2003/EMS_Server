@@ -7,11 +7,11 @@
 
 module.exports = {
     attributes: {
-        guestName: {
+        speakerName: {
             type: "string",
             required: false,
         },
-        guestImg: {
+        speakerImg: {
             type: "string",
             required: false,
         },

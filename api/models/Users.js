@@ -58,7 +58,13 @@ module.exports = {
     receiver: {
       collection: "notifications",
       via: 'receiver'
+    },
+
+    suggestion: {
+      collection: "suggestions",
+      via: 'sender'
     }
+
   },
 };
 

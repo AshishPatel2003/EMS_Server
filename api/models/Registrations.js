@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
 
     attendance : {
-      type: "string", 
+      type: "boolean", 
       required: false
     },
 

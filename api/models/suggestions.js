@@ -14,6 +14,10 @@ module.exports = {
       required: true,
     },
 
+    sender: {
+      model: "users"
+    },
+
     // Foreign keys
     event: {
       model: "events"

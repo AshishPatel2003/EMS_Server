@@ -46,14 +46,14 @@ module.exports.routes = {
 
     // Event Members
     'GET /event/:eventId/member': 'EventMemberController.getEventMembers',
-    'PUT /event/:eventId/member/:memberId/add': 'EventMemberController.addEventMember',
-    'DELETE /event/:eventId/member/:memberId/delete': 'EventMemberController.deleteEventMember',
+    'PUT /event/:eventId/member/:userId/add': 'EventMemberController.addEventMember',
+    'DELETE /event/:eventId/member/:userId/delete': 'EventMemberController.deleteEventMember',
 
-    // Guest 
-    'GET /event/:eventId/guest': 'GuestController.getGuests',
-    'PUT /event/:eventId/guest/add': 'GuestController.addGuest',
-    'PATCH /event/:eventId/guest/:guestId/update': 'GuestController.updateGuest',
-    'DELETE /event/:eventId/guest/:guestId/delete': 'GuestController.deleteGuest',
+    // Speaker 
+    'GET /event/:eventId/speaker': 'SpeakerController.getSpeakers',
+    'PUT /event/:eventId/speaker/add': 'SpeakerController.addSpeaker',
+    'PATCH /event/:eventId/speaker/:speakerId/update': 'SpeakerController.updateSpeaker',
+    'DELETE /event/:eventId/speaker/:speakerId/delete': 'SpeakerController.deleteSpeaker',
 
     // Resources
     'GET /resource': 'ResourceController.getResources',
@@ -73,6 +73,6 @@ module.exports.routes = {
     // Registrations
     'GET /event/:eventId/registration': 'RegistrationController.getRegistrations',
     'PUT /event/:eventId/registration/enroll': 'RegistrationController.enroll',
-    'PATCH /event/:eventId/registration/:registrationId/add-attendance': 'RegistrationController.addAttendance',
-    'DELETE /event/:eventId/registration/:registrationId/unenroll': 'RegistrationController.unenroll',
+    'PATCH /event/:eventId/registration/add-attendance': 'RegistrationController.addAttendance',
+    'DELETE /event/:eventId/registration/unenroll': 'RegistrationController.unenroll',
 };
