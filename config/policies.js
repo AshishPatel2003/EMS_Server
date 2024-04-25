@@ -45,6 +45,7 @@ module.exports.policies = {
     "getEvents": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent"],
     "addEvent": ["isLoggedIn", "isValidRole", "isRoleStudent"],
     "updateEvent": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
+    "approveEvent": ["isLoggedIn", "isValidRole", "isRoleAdmin", "isValidEvent"],
     "deleteEvent": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
   },
   "SpeakerController": {

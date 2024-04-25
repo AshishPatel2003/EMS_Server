@@ -154,6 +154,34 @@ module.exports = {
         }
     },
 
+    approveEvent: async (req, res) => {
+        try {
+            let updateEvent = await Events.updateOne({
+                id: req.params.eventId,
+            }).set({
+                status: "Approved"
+            });
+
+            if (updateEvent) {
+                res.status(ResponseCode.OK).json({
+                    type: "success",
+                    message: "Event Approved Successfully",
+                });
+            } else {
+                res.status(ResponseCode.SERVER_ERROR).json({
+                    type: "error",
+                    message: "Failed to approve event",
+                });
+            }
+        } catch (error) {
+            console.log("Event Approve Error => ", error.message);
+            res.status(ResponseCode.SERVER_ERROR).json({
+                type: "error",
+                message: error.message,
+            });
+        }
+    },
+
     deleteEvent: async (req, res) => {
         console.log(req.params.eventId);
         try {
