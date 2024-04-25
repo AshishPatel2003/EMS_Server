@@ -56,10 +56,26 @@ module.exports.bootstrap = async function (cb) {
               password: await sails.config.constants.Dependencies.bcrypt.hash(sails.config.constants.SuperAdmin.password, 10),
               role: role_record.id
             }
-          ).exec((error, user, wasCreated) => {
+          ).exec(async (error, user, wasCreated) => {
             if (error) throw error;
             if (wasCreated)
               console.log("Admin created successfully");
+              // await EventRole.findOrCreate(
+              //   { eventRoleName: "Event Organizer" },
+              //   {
+              //     firstName: sails.config.constants.SuperAdmin.firstName,
+              //     lastName: sails.config.constants.SuperAdmin.lastName,
+              //     middleName: sails.config.constants.SuperAdmin.middleName,
+              //     email: sails.config.constants.SuperAdmin.email,
+              //     password: await sails.config.constants.Dependencies.bcrypt.hash(sails.config.constants.SuperAdmin.password, 10),
+              //     role: role_record.id
+              //   }
+              // ).exec((error, user, wasCreated) => {
+              //   if (error) throw error;
+              //   if (wasCreated)
+              //     console.log("Admin created successfully");
+                
+              // });
           });
         }
       });

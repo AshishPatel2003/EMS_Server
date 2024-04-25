@@ -18,6 +18,10 @@ module.exports.policies = {
   ***************************************************************************/
 
   // '*': true,
+  "UserController": {
+    "signup": ["validations/UserValidation/signup"],
+    "login": ["validations/UserValidation/login"]
+  },
   "RoleController": {
     "getRoles": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
     "addRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],

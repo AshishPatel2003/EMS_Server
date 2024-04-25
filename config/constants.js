@@ -18,7 +18,34 @@ const Dependencies = {
     nodemailer: require("nodemailer"),
     ejs: require("ejs"),
     path: require("path"),
+    expressValidator: require("express-validator")
 };
+
+const Pages = {
+    Dashboard: {
+        Organizer: {
+            
+        },
+        Administration: {
+            Events: [
+                "Event",
+                "EventMember",
+                "Registration",
+                "Speaker",
+                "EventResource"
+            ]
+        }
+    },
+    General: [
+        "My Event",
+        "Profile",
+    ]
+}
+
+const PublicAccessList = [
+    "Event",
+    "Speaker",
+]
 
 const SuperAdmin = {
     firstName: "Super",

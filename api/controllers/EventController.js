@@ -159,7 +159,7 @@ module.exports = {
             let updateEvent = await Events.updateOne({
                 id: req.params.eventId,
             }).set({
-                status: "Approved"
+                status: "Approved",
             });
 
             if (updateEvent) {
@@ -174,7 +174,7 @@ module.exports = {
                 });
             }
         } catch (error) {
-            console.log("Event Approve Error => ", error.message);
+            console.log("Approval Error => ", error.message);
             res.status(ResponseCode.SERVER_ERROR).json({
                 type: "error",
                 message: error.message,
@@ -202,9 +202,9 @@ module.exports = {
                         id: req.params.eventId,
                     });
                     if (deleteRecord) {
-                        const deleteMember = await EventMemberController.destroy({
+                        const deleteMember = await EventMembers.destroy({
                             event: req.params.eventId
-                        })
+                        }).fetch()
                         if (deleteMember) {
                             res.status(ResponseCode.OK).json({
                                 type: "success",
