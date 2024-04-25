@@ -154,6 +154,35 @@ module.exports = {
         }
     },
 
+    approveEvent: async (req, res) => {
+
+        try {
+            let updateEvent = await Events.updateOne({
+                id: req.params.eventId,
+            }).set({
+                status: "Approved",
+            });
+
+            if (updateEvent) {
+                res.status(ResponseCode.OK).json({
+                    type: "success",
+                    message: "Event Approved Successfully",
+                });
+            } else {
+                res.status(ResponseCode.SERVER_ERROR).json({
+                    type: "error",
+                    message: "Failed to approve event",
+                });
+            }
+        } catch (error) {
+            console.log("Approval Error => ", error.message);
+            res.status(ResponseCode.SERVER_ERROR).json({
+                type: "error",
+                message: error.message,
+            });
+        }
+    },
+
     deleteEvent: async (req, res) => {
         console.log(req.params.eventId);
         try {
@@ -174,9 +203,9 @@ module.exports = {
                         id: req.params.eventId,
                     });
                     if (deleteRecord) {
-                        const deleteMember = await EventMemberController.destroy({
+                        const deleteMember = await EventMembers.destroy({
                             event: req.params.eventId
-                        })
+                        }).fetch()
                         if (deleteMember) {
                             res.status(ResponseCode.OK).json({
                                 type: "success",

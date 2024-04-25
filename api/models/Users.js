@@ -13,10 +13,6 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    middleName: {
-      type: 'string',
-      required: false,
-    },
     lastName: {
       type: 'string',
       required: false,
@@ -27,7 +23,16 @@ module.exports = {
     },
     password: {
       type: 'string',
-      required: true,
+      required: false,
+    },
+    photoURL: {
+      type: 'string',
+      required: false,
+    },
+    googleAuth:{
+      type: 'boolean',
+      // required: true,
+      defaultsTo: false,
     },
     accessToken: {
       type: 'string',
