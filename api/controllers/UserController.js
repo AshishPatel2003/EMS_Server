@@ -35,6 +35,7 @@ module.exports = {
                             password: password,
                             googleAuth: googleAuth,
                             role: role_record.id,
+                            // accessToken: accessToken
                         }
                     ).exec(async (error, user, wasCreated) => {
                         if (error) throw error;
@@ -47,7 +48,7 @@ module.exports = {
                         else {
                             let update = await Users.updateOne(
                                 { email: email },
-                                { googleAuth: googleAuth, photoURL: photoURL }
+                                { googleAuth: googleAuth, photoURL: photoURL}
                             ).fetch();
                             if (update) {
                                 res.status(ResponseCode.OK).json({
@@ -113,13 +114,22 @@ module.exports = {
 
     // Login Controller
     login: async (req, res) => {
-        const { email, password } = req.body;
+        const { email, password, googleAuth, accessToken } = req.body;
         console.log(req.body);
 
         try {
             const user = await Users.findOne({ email: email });
             console.log("User => ", user);
+            
             if (user) {
+                if (googleAuth == true) {
+                    const update = Users.updateOne({
+                        email: email
+                    }, {
+                        accessToken: accessToken,
+                        googleAuth: true
+                    })
+                }
                 console.log(await bcrypt.compare(password, user.password));
                 if (await bcrypt.compare(password, user.password)) {
                     const token = await jwt.sign(
@@ -187,6 +197,12 @@ module.exports = {
                     });
                 }
             } else {
+                if (googleAuth == true) {
+                    res.status(ResponseCode.NOT_FOUND).json({
+                        type: "error",
+                        message: "Try Login",
+                    });
+                }
                 res.status(ResponseCode.NOT_FOUND).json({
                     type: "error",
                     message: "User not found",
@@ -200,4 +216,15 @@ module.exports = {
             });
         }
     },
+    getProfile: async (req, res) => {
+        const {email} = req.body
+
+        const userinfo = Users.findOne({ email: email })
+        if (userinfo) {
+            res.status(200).json({type: "success", message: userinfo})
+        } else {
+            res.status(400).json({type: "error", message: {}})
+        }
+
+    }
 };

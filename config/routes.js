@@ -13,6 +13,7 @@ module.exports.routes = {
     // User - Complete
     'POST /signup' : 'UserController.signup',
     'POST /login' : 'UserController.login',
+    'POST /get-profile': 'UserController.getProfile',
 
     // Role - Complete
     'GET /role': 'RoleController.getRoles',
