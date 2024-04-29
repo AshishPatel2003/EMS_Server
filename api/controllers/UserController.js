@@ -15,10 +15,8 @@ module.exports = {
     // Signup Controller
     signup: async (req, res) => {
         console.log(req.body);
-        const { firstName, lastName, email, password, photoURL, googleAuth } =
+        const { firstName, lastName, email, photoURL, googleAuth } =
             req.body;
-        
-        const hashedPassword = await bcrypt.hash(password, 10);
 
         try {
             let role_record = await Roles.findOne({ roleName: "Student" });
@@ -32,10 +30,8 @@ module.exports = {
                             lastName: lastName,
                             email: email,
                             photoURL: photoURL,
-                            password: password,
                             googleAuth: googleAuth,
                             role: role_record.id,
-                            // accessToken: accessToken
                         }
                     ).exec(async (error, user, wasCreated) => {
                         if (error) throw error;
@@ -49,7 +45,7 @@ module.exports = {
                             let update = await Users.updateOne(
                                 { email: email },
                                 { googleAuth: googleAuth, photoURL: photoURL}
-                            ).fetch();
+                            );
                             if (update) {
                                 res.status(ResponseCode.OK).json({
                                     type: "success",
@@ -72,7 +68,6 @@ module.exports = {
                             lastName: lastName,
                             email: email,
                             photoURL: photoURL,
-                            password: password,
                             googleAuth: googleAuth,
                             role: role_record.id,
                         }
@@ -219,7 +214,7 @@ module.exports = {
     getProfile: async (req, res) => {
         const {email} = req.body
 
-        const userinfo = Users.findOne({ email: email })
+        const userinfo = await Users.findOne({ email: email })
         if (userinfo) {
             res.status(200).json({type: "success", message: userinfo})
         } else {

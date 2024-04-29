@@ -21,22 +21,13 @@ module.exports = {
       type: 'string',
       required: true,
     },
-    password: {
-      type: 'string',
-      required: false,
-    },
     photoURL: {
       type: 'string',
       required: false,
     },
     googleAuth:{
       type: 'boolean',
-      // required: true,
       defaultsTo: false,
-    },
-    accessToken: {
-      type: 'string',
-      required: false
     },
 
 

@@ -7,11 +7,10 @@ module.exports = async function (req, res, proceed) {
     // Register Validation Rules for Incoming Data.
     const registerRules = [
         body("firstName").notEmpty().withMessage("Firstname is required"),
+        body("lastName").notEmpty().withMessage("Lastname is required"),
         body("email").notEmpty().withMessage("Email is required"),
         body("email").isEmail().withMessage("Invalid Email Address"),
-        body("password").notEmpty().withMessage("Password is required"),
-        body("googleAuth").notEmpty().withMessage("Password is required"),
-        body("photoURL").notEmpty().withMessage("Password is required"),
+        body("googleAuth").notEmpty().withMessage("Password is required")
     ];
 
     console.log("Validation processing...");
