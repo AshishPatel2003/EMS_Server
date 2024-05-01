@@ -23,21 +23,21 @@ module.exports.policies = {
     "login": ["validations/UserValidation/login"]
   },
   "RoleController": {
-    "getRoles": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "addRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "updateRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "deleteRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "getRoles": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "addRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "updateRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "deleteRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
   },
   "PermissionController": {
-    "getPermissions": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "addPermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "updatePermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "deletePermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "getPermissions": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "addPermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "updatePermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "deletePermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
   },
   "AccessMappingController": {
-    "getAccessMappings": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "addAccessMapping": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "deleteAccessMapping": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "getAccessMappings": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "addAccessMapping": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "deleteAccessMapping": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
   },
   "EventRoleController": {
     "getEventRoles": ["isLoggedIn", "isValidRole", "isRoleAdmin"],

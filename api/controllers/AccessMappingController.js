@@ -15,7 +15,7 @@ module.exports = {
     getAccessMappings: async (req, res) => {
         try {
             let permissions_records = await AccessMappings.find({
-                roleId: req.params.id,
+                role: req.params.id,
             }).populate('role').populate('permission');
             if (permissions_records) {
                 res.status(ResponseCode.OK).json(permissions_records);
@@ -38,12 +38,12 @@ module.exports = {
                 if (Object.keys(permission_record).length > 0) {
                     await AccessMappings.findOrCreate(
                         {
-                            roleId: req.params.id,
-                            permissionId: req.params.permissionId,
+                            role: req.params.id,
+                            permission: req.params.permissionId,
                         },
                         {
-                            roleId: req.params.id,
-                            permissionId: req.params.permissionId,
+                            role: req.params.id,
+                            permission: req.params.permissionId,
                         }
                     ).exec((error, permission, wasCreated) => {
                         if (error) throw error;
@@ -111,13 +111,13 @@ module.exports = {
     deleteAccessMapping: async (req, res) => {
         try {
             const get_record = await AccessMappings.find({
-                roleId: req.params.id,
-                permissionId: req.params.permissionId,
+                role: req.params.id,
+                permission: req.params.permissionId,
             });
             if (Object.keys(get_record).length > 0) {
                 const delete_record = await AccessMappings.destroyOne({
-                    roleId: req.params.id,
-                    permissionId: req.params.permissionId,
+                    role: req.params.id,
+                    permission: req.params.permissionId,
                 });
                 if (delete_record) {
                     res.status(ResponseCode.OK).json({
