@@ -214,7 +214,7 @@ module.exports = {
     getProfile: async (req, res) => {
         const {email} = req.body
 
-        const userinfo = await Users.findOne({ email: email })
+        const userinfo = await Users.findOne({ email: email }).populate('role')
         if (userinfo) {
             res.status(200).json({type: "success", message: userinfo})
         } else {
