@@ -55,7 +55,7 @@ module.exports.bootstrap = async function (cb) {
                             email: sails.config.constants.SuperAdmin.email,
                             role: role_record.id,
                             googleAuth: false,
-                            role: role_record.id,
+                            photoURL: ""
                         }
                     ).exec(async (error, user, wasCreated) => {
                         if (error) throw error;
