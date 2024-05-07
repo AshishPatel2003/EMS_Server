@@ -14,6 +14,7 @@ module.exports.routes = {
     'POST /signup' : 'UserController.signup',
     'POST /login' : 'UserController.login',
     'POST /get-profile': 'UserController.getProfile',
+    'PATCH /update-profile': 'UserController.updateProfile',
 
     // Role - Complete
     'GET /role': 'RoleController.getRoles',

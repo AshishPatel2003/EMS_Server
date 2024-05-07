@@ -29,6 +29,14 @@ module.exports = {
       type: 'boolean',
       defaultsTo: false,
     },
+    uniqueNo: {
+      type: "string",
+      required: false
+    },
+    school: {
+      type: "string",
+      required: false
+    },
 
 
 

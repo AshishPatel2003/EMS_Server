@@ -21,7 +21,8 @@ module.exports.policies = {
   "UserController": {
     "signup": ["validations/UserValidation/signup"],
     "login": ["validations/UserValidation/login"],
-    "getProfile": ['authenticateUser']
+    "getProfile": ['authenticateUser'],
+    "updateProfile": ['authenticateUser']
   },
   "RoleController": {
     // "getRoles": ["isLoggedIn", "isValidRole", "isRoleAdmin"],

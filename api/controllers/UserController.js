@@ -216,10 +216,26 @@ module.exports = {
 
         const userinfo = await Users.findOne({ email: email }).populate('role')
         if (userinfo) {
-            res.status(200).json({type: "success", message: userinfo})
+            res.status(ResponseCode.OK).json({type: "success", message: userinfo})
         } else {
-            res.status(400).json({type: "error", message: {}})
+            res.status(ResponseCode.SERVER_ERROR).json({type: "error", message: {}})
         }
 
+    },
+    updateProfile: async(req, res) => {
+        const {firstName, lastName, email, uniqueNo, school } = req.body;
+
+        try{
+            const updateProfile = await Users.updateOne({email: email}, {firstName: firstName, lastName: lastName, uniqueNo: uniqueNo, school: school})
+            if (updateProfile) {
+                console.log(updateProfile)
+                res.status(ResponseCode.OK).json({type: "success", message: updateProfile})
+            } else {
+                res.status(ResponseCode.CONFLICT).json({type: "error", message: "Update Failed"})
+            }
+        } catch (e) {
+            res.status(200).json({type: "success", message: userinfo})
+
+        }
     }
 };
