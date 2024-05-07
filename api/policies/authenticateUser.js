@@ -16,7 +16,9 @@ module.exports = async (req, res, proceed) => {
         const decodeValue = await firebaseAdmin.auth().verifyIdToken(token);
         if (decodeValue) {
             console.log(decodeValue)
-            req.user = decodeValue;
+            const user = await Users.findOne({ email: decodeValue.email }).populate('role');
+            console.log({...decodeValue, ...user})
+            req.user = {...decodeValue, ...user};
 
             return proceed();
         } else {

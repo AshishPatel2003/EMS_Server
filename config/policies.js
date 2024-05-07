@@ -36,7 +36,7 @@ module.exports.policies = {
     // "deletePermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
   },
   "AccessMappingController": {
-    // "getAccessMappings": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    "getAccessMappings": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent"],
     // "addAccessMapping": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
     // "deleteAccessMapping": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
   },
@@ -48,7 +48,8 @@ module.exports.policies = {
   },
   "EventController": {
     "getEvents": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent"],
-    "addEvent": ["isLoggedIn", "isValidRole", "isRoleStudent"],
+    "getMyEvents": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent"],
+    "addEvent": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "updateEvent": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
     "approveEvent": ["isLoggedIn", "isValidRole", "isRoleAdmin", "isValidEvent"],
     "deleteEvent": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],

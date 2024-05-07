@@ -41,7 +41,8 @@ module.exports.routes = {
 
     // Event 
     'GET /event': 'EventController.getEvents',
-    'PUT /event/add': 'EventController.addEvent',
+    'GET /my-event': 'EventController.getMyEvents',
+    'PUT /event/initiate': 'EventController.addEvent',
     'PATCH /event/:eventId/update': 'EventController.updateEvent',
     'PATCH /event/:eventId/approve': 'EventController.approveEvent',
     'DELETE /event/:eventId/delete': 'EventController.deleteEvent',

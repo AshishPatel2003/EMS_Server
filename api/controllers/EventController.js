@@ -28,9 +28,27 @@ module.exports = {
         }
     },
 
+    getMyEvents: async (req, res) => {
+        try {
+            let allRecords = await EventMembers.find({user: req.user.id})
+                .populate("event")
+                .populate("eventrole");
+                console.log("Events found", allRecords);
+            if (allRecords) {
+                res.status(ResponseCode.OK).json({type: "success", message: "All Your Event", events: allRecords});
+            } else {
+                res.status(ResponseCode.NOT_FOUND).json({type: "error", message: "YOUR EVENTS NOT FOUND", });
+            }
+        } catch (error) {
+            console.log("Error => ", error.message);
+            res.status(ResponseCode.NOT_FOUND).json({type: "error", message: error.message });
+        }
+    }
+    ,
+
     addEvent: async (req, res) => {
         const { eventName } = req.body;
-
+        console.log(eventName)
         try {
             await Events.findOrCreate(
                 {
@@ -53,12 +71,12 @@ module.exports = {
                     if (eventRoleRecord) {
                         await EventMembers.findOrCreate(
                             {
-                                user: req.user.userId,
+                                user: req.user.id,
                                 event: event.id,
                                 eventrole: eventRoleRecord.id,
                             },
                             {
-                                user: req.user.userId,
+                                user: req.user.id,
                                 event: event.id,
                                 eventrole: eventRoleRecord.id,
                             }
