@@ -41,9 +41,12 @@ module.exports.routes = {
     'DELETE /event-role/:id/delete': 'EventRoleController.deleteEventRole',
 
     // Event 
-    'GET /event': 'EventController.getEvents',
-    'GET /my-event': 'EventController.getMyEvents',
+    'GET /events': 'EventController.getEvents',
+    'GET /event/:id': 'EventController.getEvent',
+    'GET /my-events': 'EventController.getMyEvents',
+    'GET /my-event/:id': 'EventController.getMyEvent',
     'PUT /event/initiate': 'EventController.addEvent',
+    'PATCH /my-event/:id/upload-banner': 'EventController.uploadBanner',
     'PATCH /event/:eventId/update': 'EventController.updateEvent',
     'PATCH /event/:eventId/approve': 'EventController.approveEvent',
     'DELETE /event/:eventId/delete': 'EventController.deleteEvent',

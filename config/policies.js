@@ -48,8 +48,11 @@ module.exports.policies = {
     "deleteEventRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
   },
   "EventController": {
-    "getEvents": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent"],
+    "getEvents": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    "getEvent": ["authenticateUser", "isValidRole"],
     "getMyEvents": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent"],
+    "getMyEvent": ["authenticateUser", "isValidRole", "isRoleStudent"],
+    "uploadBanner": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "addEvent": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "updateEvent": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
     "approveEvent": ["isLoggedIn", "isValidRole", "isRoleAdmin", "isValidEvent"],

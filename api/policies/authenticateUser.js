@@ -12,7 +12,7 @@ module.exports = async (req, res, proceed) => {
         //     ),
         // });
         const token = req.headers.authorization.split(' ')[1];
-        // console.log(token)
+        console.log(token)
         const decodeValue = await firebaseAdmin.auth().verifyIdToken(token);
         if (decodeValue) {
             console.log(decodeValue)

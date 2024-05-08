@@ -8,6 +8,7 @@ module.exports = async (req, res, proceed) => {
     }
 
     if (req.user.roleName === "Student") {
+        console.log("proceeding from student role")
         proceed();
     } else {
         return res.status(ResponseCode.FORBIDDEN).json({ "type": "error", "message": "Unauthorized" });

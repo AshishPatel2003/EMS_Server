@@ -19,7 +19,7 @@ module.exports = {
                 .populate("suggestion")
                 .populate("eventmember")
                 .populate("registration")
-                .populate('eventresource');
+                .populate("eventresource");
             if (allRecords) {
                 res.status(ResponseCode.OK).json(allRecords);
             }
@@ -27,28 +27,124 @@ module.exports = {
             console.log("Error => ", error.message);
         }
     },
-
-    getMyEvents: async (req, res) => {
+    getEvent: async (req, res) => {
         try {
-            let allRecords = await EventMembers.find({user: req.user.id})
-                .populate("event")
-                .populate("eventrole");
-                console.log("Events found", allRecords);
-            if (allRecords) {
-                res.status(ResponseCode.OK).json({type: "success", message: "All Your Event", events: allRecords});
+            let event = await Events.findOne({
+                id: req.params.id,
+            });
+            console.log("Event data found", event);
+            if (event) {
+                res.status(ResponseCode.OK).json({
+                    type: "success",
+                    message: "Event found successfully",
+                    event: event,
+                });
             } else {
-                res.status(ResponseCode.NOT_FOUND).json({type: "error", message: "YOUR EVENTS NOT FOUND", });
+                res.status(ResponseCode.OK).json({
+                    type: "error",
+                    message: "YOUR EVENTS NOT FOUND",
+                });
             }
         } catch (error) {
             console.log("Error => ", error.message);
-            res.status(ResponseCode.NOT_FOUND).json({type: "error", message: error.message });
+            res.status(ResponseCode.SERVER_ERROR).json({
+                type: "error",
+                message: error.message,
+            });
         }
-    }
-    ,
+    },
+
+    getMyEvents: async (req, res) => {
+        try {
+            let allRecords = await EventMembers.find({ user: req.user.id })
+                .populate("event")
+                .populate("eventrole");
+            console.log("Events found", allRecords);
+            if (allRecords) {
+                res.status(ResponseCode.OK).json({
+                    type: "success",
+                    message: "All Your Event",
+                    events: allRecords,
+                });
+            } else {
+                res.status(ResponseCode.NOT_FOUND).json({
+                    type: "error",
+                    message: "YOUR EVENTS NOT FOUND",
+                });
+            }
+        } catch (error) {
+            console.log("Error => ", error.message);
+            res.status(ResponseCode.NOT_FOUND).json({
+                type: "error",
+                message: error.message,
+            });
+        }
+    },
+
+    getMyEvent: async (req, res) => {
+        try {
+            let event = await EventMembers.findOne({
+                user: req.user.id,
+                event: req.params.id,
+            }).populate("event");
+            console.log("Event found asdfadfads ", event);
+            if (event) {
+                res.status(ResponseCode.OK).json({
+                    type: "success",
+                    message: "Event found successfully",
+                    event: event,
+                });
+            } else {
+                res.status(ResponseCode.OK).json({
+                    type: "error",
+                    message: "YOUR EVENTS NOT FOUND",
+                });
+            }
+        } catch (error) {
+            console.log("Error => ", error.message);
+            res.status(ResponseCode.SERVER_ERROR).json({
+                type: "error",
+                message: error.message,
+            });
+        }
+    },
+
+    uploadBanner: async (req, res) => {
+        console.log(req.params.id)
+        try {
+            const event = await Events.findOne({ id: req.params.id });
+            console.log(event)
+            if (event) {
+                // console.log(event)
+                const oldBanner = event.bannerImg;
+                const eventUpdate = await Events.updateOne(
+                    { id: req.params.id },
+                    { bannerImg: req.body.bannerImg }
+                );
+                if (eventUpdate) {
+                    return res
+                        .status(ResponseCode.OK)
+                        .json({ type: "success", message: "Banner Updated", oldBanner: oldBanner});
+                } else {
+                    return res
+                        .status(ResponseCode.CONFLICT)
+                        .json({ type: "error", message: "Upload Failed" });
+                }
+            } else {
+                return res
+                        .status(ResponseCode.NOT_FOUND)
+                        .json({ type: "error", message: "Event Not found" });
+            }
+        } catch (error) {
+            return res
+                .status(ResponseCode.SERVER_ERROR)
+                .json({ type: "error", message: error.message });
+        }
+    },
 
     addEvent: async (req, res) => {
         const { eventName } = req.body;
-        console.log(eventName)
+        console.log(eventName);
         try {
             await Events.findOrCreate(
                 {
@@ -65,8 +161,8 @@ module.exports = {
                     let eventRoleRecord = await EventRoles.findOne({
                         eventRoleName: "Event Organizer",
                     });
-                    console.log("Addevent : event=>",event)
-                    console.log("Addevent : role=>",eventRoleRecord)
+                    console.log("Addevent : event=>", event);
+                    console.log("Addevent : role=>", eventRoleRecord);
 
                     if (eventRoleRecord) {
                         await EventMembers.findOrCreate(
@@ -221,8 +317,8 @@ module.exports = {
                     });
                     if (deleteRecord) {
                         const deleteMember = await EventMembers.destroy({
-                            event: req.params.eventId
-                        }).fetch()
+                            event: req.params.eventId,
+                        }).fetch();
                         if (deleteMember) {
                             res.status(ResponseCode.OK).json({
                                 type: "success",
