@@ -222,6 +222,45 @@ module.exports = {
                 .json({ type: "error", message: error.message });
         }
     },
+    updateSchedule: async (req, res) => {
+        console.log(req.params.id)
+        const {startTime, endTime, venue, showSeats, maxSeats} = req.body;
+        try {
+            const event = await Events.findOne({ id: req.params.id });
+            console.log(event)
+            if (event) {
+                // console.log(event)
+                const old = event.startTime;
+                // if (old != startTime ) {
+                    const eventUpdate = await Events.updateOne(
+                        { id: req.params.id },
+                        { startTime: startTime, endTime: endTime, venue: venue, showSeats: showSeats, maxSeats: maxSeats }
+                    );
+                    if (eventUpdate) {
+                        return res
+                            .status(ResponseCode.OK)
+                            .json({ type: "success", message: "Schedule Updated"});
+                    } else {
+                        return res
+                            .status(ResponseCode.CONFLICT)
+                            .json({ type: "error", message: "Update Failed" });
+                    }
+                // } else {
+                //     return res
+                //             .status(ResponseCode.CONFLICT)
+                //             .json({ type: "error", message: "No Change Made" });
+                // }
+            } else {
+                return res
+                        .status(ResponseCode.NOT_FOUND)
+                        .json({ type: "error", message: "Event Not found" });
+            }
+        } catch (error) {
+            return res
+                .status(ResponseCode.SERVER_ERROR)
+                .json({ type: "error", message: error.message });
+        }
+    },
 
     addEvent: async (req, res) => {
         const { eventName } = req.body;

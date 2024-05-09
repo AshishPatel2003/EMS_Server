@@ -49,7 +49,7 @@ module.exports.policies = {
   },
 
   "VenueController": {
-    "getVenues": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "getVenues": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent"],
     "addVenue": ["authenticateUser", "isValidRole", "isRoleAdmin"],
     "updateVenue": ["authenticateUser", "isValidRole", "isRoleAdmin"],
     "deleteVenue": ["authenticateUser", "isValidRole", "isRoleAdmin"],
@@ -63,6 +63,7 @@ module.exports.policies = {
     "uploadBanner": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "updateEventName": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "updateEventInfo": ["authenticateUser", "isValidRole", "isRoleStudent"],
+    "updateSchedule": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "addEvent": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "updateEvent": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
     "approveEvent": ["authenticateUser", "isValidRole", "isRoleAdmin", "isValidEvent"],

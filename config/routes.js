@@ -57,6 +57,7 @@ module.exports.routes = {
     'PATCH /my-event/:id/upload-banner': 'EventController.uploadBanner',
     'PATCH /my-event/:id/update-eventname': 'EventController.updateEventName',
     'PATCH /my-event/:id/update-eventinfo': 'EventController.updateEventInfo',
+    'PATCH /my-event/:id/update-schedule': 'EventController.updateSchedule',
     'PATCH /event/:eventId/update': 'EventController.updateEvent',
     'PATCH /event/:eventId/approve': 'EventController.approveEvent',
     'DELETE /event/:eventId/delete': 'EventController.deleteEvent',
