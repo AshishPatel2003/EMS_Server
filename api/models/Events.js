@@ -38,7 +38,7 @@ module.exports = {
       required: false,
     },
     venue: {
-      type: 'string',
+      model: 'venues',
       required: false
     },
     showSeats: {

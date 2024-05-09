@@ -25,69 +25,79 @@ module.exports.policies = {
     "updateProfile": ['authenticateUser']
   },
   "RoleController": {
-    // "getRoles": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    // "addRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    // "updateRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    // "deleteRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "getRoles": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    // "addRole": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    // "updateRole": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    // "deleteRole": ["authenticateUser", "isValidRole", "isRoleAdmin"],
   },
   "PermissionController": {
-    // "getPermissions": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    // "addPermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    // "updatePermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    // "deletePermission": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "getPermissions": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    // "addPermission": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    // "updatePermission": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    // "deletePermission": ["authenticateUser", "isValidRole", "isRoleAdmin"],
   },
   "AccessMappingController": {
     "getAccessMappings": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent"],
-    // "addAccessMapping": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    // "deleteAccessMapping": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    // "addAccessMapping": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    // "deleteAccessMapping": ["authenticateUser", "isValidRole", "isRoleAdmin"],
   },
   "EventRoleController": {
-    "getEventRoles": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "addEventRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "updateEventRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "deleteEventRole": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    "getEventRoles": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "addEventRole": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "updateEventRole": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "deleteEventRole": ["authenticateUser", "isValidRole", "isRoleAdmin"],
   },
+
+  "VenueController": {
+    "getVenues": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "addVenue": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "updateVenue": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "deleteVenue": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+  },
+
   "EventController": {
-    "getEvents": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    "getEvents": ["authenticateUser", "isValidRole", "isRoleAdmin"],
     "getEvent": ["authenticateUser", "isValidRole"],
     "getMyEvents": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent"],
     "getMyEvent": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "uploadBanner": ["authenticateUser", "isValidRole", "isRoleStudent"],
+    "updateEventName": ["authenticateUser", "isValidRole", "isRoleStudent"],
+    "updateEventInfo": ["authenticateUser", "isValidRole", "isRoleStudent"],
     "addEvent": ["authenticateUser", "isValidRole", "isRoleStudent"],
-    "updateEvent": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
-    "approveEvent": ["isLoggedIn", "isValidRole", "isRoleAdmin", "isValidEvent"],
-    "deleteEvent": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
+    "updateEvent": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
+    "approveEvent": ["authenticateUser", "isValidRole", "isRoleAdmin", "isValidEvent"],
+    "deleteEvent": ["authenticateUser", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer", "isValidEvent"],
   },
   "SpeakerController": {
-    "getSpeakers": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer"],
-    "addSpeaker": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer"],
-    "updateSpeaker": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer", "isValidSpeaker"],
-    "deleteSpeaker": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer", "isValidSpeaker"],
+    "getSpeakers": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer"],
+    "addSpeaker": ["authenticateUser", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer"],
+    "updateSpeaker": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer", "isValidSpeaker"],
+    "deleteSpeaker": ["authenticateUser", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer", "isValidSpeaker"],
   },
   "EventMemberController": {
-    "getEventMembers": ["isLoggedIn", "isValidRole", "isValidEvent", "isRoleAdminOrStudent"],
-    "addEventMember": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer", "isValidUser"],
-    "deleteEventMember": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer",  "isValidUser"]
+    "getEventMembers": ["authenticateUser", "isValidRole", "isValidEvent", "isRoleAdminOrStudent"],
+    "addEventMember": ["authenticateUser", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer", "isValidUser"],
+    "deleteEventMember": ["authenticateUser", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer",  "isValidUser"]
   },
   "ResourceController": {
-    "getResources": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "addResource": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "updateResource": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
-    "deleteResource": ["isLoggedIn", "isValidRole", "isRoleAdmin"],
+    "getResources": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "addResource": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "updateResource": ["authenticateUser", "isValidRole", "isRoleAdmin"],
+    "deleteResource": ["authenticateUser", "isValidRole", "isRoleAdmin"],
   },
   "EventResourceController" : {
-    "getEventResources": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent"],
-    "addEventResource": ["isLoggedIn", "isValidRole", "isRoleStudent", "isEREventOrganizer", "isValidEvent", "isValidResource"],
-    "deleteEventResource": ["isLoggedIn", "isValidRole", "isRoleStudent", "isEREventOrganizer", "isValidEvent", "isValidResource"]
+    "getEventResources": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent", "isValidEvent"],
+    "addEventResource": ["authenticateUser", "isValidRole", "isRoleStudent", "isEREventOrganizer", "isValidEvent", "isValidResource"],
+    "deleteEventResource": ["authenticateUser", "isValidRole", "isRoleStudent", "isEREventOrganizer", "isValidEvent", "isValidResource"]
   },
   "SuggestionController": {
-    "getSuggestions": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer"],
-    "addSuggestion": ["isLoggedIn", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer"]
+    "getSuggestions": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer"],
+    "addSuggestion": ["authenticateUser", "isValidRole", "isRoleAdminOrStudent", "isValidEvent", "isEREventOrganizer"]
   },
   "RegistrationController": {
-    "getRegistrations": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer"],
-    "enroll": ["isLoggedIn", "isValidRole","isRoleStudent", "isValidEvent"],
-    "addAttendance": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer"],
-    "unenroll": ["isLoggedIn", "isValidRole", "isRoleStudent", "isValidEvent"]
+    "getRegistrations": ["authenticateUser", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer"],
+    "enroll": ["authenticateUser", "isValidRole","isRoleStudent", "isValidEvent"],
+    "addAttendance": ["authenticateUser", "isValidRole", "isRoleStudent", "isValidEvent", "isEREventOrganizer"],
+    "unenroll": ["authenticateUser", "isValidRole", "isRoleStudent", "isValidEvent"]
   }
 };

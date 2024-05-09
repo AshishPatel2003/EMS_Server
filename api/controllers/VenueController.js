@@ -1,5 +1,5 @@
 /**
- * ResourcesController
+ * EventRoleController
  *
  * @description :: Server-side actions for handling incoming requests.
  * @help        :: See https://sailsjs.com/docs/concepts/actions
@@ -12,43 +12,43 @@ const ResponseCode = constants.ResponseCode;
 dotenv.config();
 
 module.exports = {
-    getResources: async (req, res) => {
+    getVenues: async (req, res) => {
         try {
-            let records = await Resources.find();
-            if (records) {
-                res.status(ResponseCode.OK).json(records);
+            let venues = await Venues.find();
+            if (venues) {
+                res.status(ResponseCode.OK).json(venues);
             }
         } catch (error) {
             console.log("Error => ", error.message);
         }
     },
 
-    addResource: async (req, res) => {
-        const { name, description, quantity } = req.body;
-
+    addVenue: async (req, res) => {
+        const { name, location, seats } = req.body;
+        console.log(req.body)
         try {
-            await Resources.findOrCreate(
+            await Venues.findOrCreate(
                 { name: name },
                 {
                     name: name,
-                    description: description,
-                    quantity: quantity,
+                    location: location,
+                    seats: seats,
                 }
-            ).exec((error, resource, wasCreated) => {
+            ).exec((error, venue, wasCreated) => {
                 if (error) throw error;
                 if (wasCreated)
                     res.status(ResponseCode.OK).json({
                         type: "success",
-                        message: "Resource Created Successful...",
+                        message: "Venue added Successful...",
                     });
                 else
                     res.status(ResponseCode.CONFLICT).json({
                         type: "error",
-                        message: "Resource already exists",
+                        message: "Venue already exists",
                     });
             });
         } catch (error) {
-            console.log("Resource Error => ", error.message);
+            console.log("Venue Error => ", error.message);
             res.status(ResponseCode.SERVER_ERROR).json({
                 type: "error",
                 message: error.message,
@@ -56,31 +56,31 @@ module.exports = {
         }
     },
 
-    updateResource: async (req, res) => {
-        const { name, description, quantity } = req.body;
-
+    updateVenue: async (req, res) => {
+        const { name, location, seats } = req.body;
+        console.log(req.params.id)
         try {
-            let updateRecord = await Resources.updateOne({
+            let update = await Venues.updateOne({
                 id: req.params.id,
             }).set({
                 name: name,
-                description: description,
-                quantity: quantity,
+                location: location,
+                seats: seats,
             });
-
-            if (updateRecord) {
+            console.log(update)
+            if (update) {
                 res.status(ResponseCode.OK).json({
                     type: "success",
-                    message: "Resource Updated Successfully",
+                    message: "Venue Updated Successfully",
                 });
             } else {
                 res.status(ResponseCode.SERVER_ERROR).json({
                     type: "error",
-                    message: "Failed to update Resource",
+                    message: "Failed to update Venue",
                 });
             }
         } catch (error) {
-            console.log("Resource Error => ", error.message);
+            console.log("Venue Error => ", error.message);
             res.status(ResponseCode.SERVER_ERROR).json({
                 type: "error",
                 message: error.message,
@@ -88,35 +88,35 @@ module.exports = {
         }
     },
 
-    deleteResource: async (req, res) => {
+    deleteVenue: async (req, res) => {
         console.log(req.params.id);
         try {
-            const getRecord = await Resources.find({
+            const getRecord = await Venues.find({
                 id: req.params.id,
             });
             if (Object.keys(getRecord).length > 0) {
-                const deleteRecord = await Resources.destroyOne({
+                const deleteRecord = await Venues.destroyOne({
                     id: req.params.id,
                 });
                 if (deleteRecord) {
                     res.status(ResponseCode.OK).json({
                         type: "success",
-                        message: "Resource Deleted Successfully",
+                        message: "Venue Deleted Successfully",
                     });
                 } else {
                     res.status(ResponseCode.SERVER_ERROR).json({
                         type: "error",
-                        message: "Failed to Delete Resource",
+                        message: "Failed to Delete Venue",
                     });
                 }
             } else {
                 res.status(ResponseCode.NOT_FOUND).json({
                     type: "error",
-                    message: "Resource not found",
+                    message: "Venue not found",
                 });
             }
         } catch (error) {
-            console.log("Error => ", error.message);
+            console.log("Venue Error => ", error.message);
             res.status(ResponseCode.SERVER_ERROR).json({
                 type: "error",
                 message: error.message,

@@ -40,6 +40,14 @@ module.exports.routes = {
     'PATCH /event-role/:id/update': 'EventRoleController.updateEventRole',
     'DELETE /event-role/:id/delete': 'EventRoleController.deleteEventRole',
 
+
+    // Venues
+    'GET /venue': 'VenueController.getVenues',
+    'PUT /venue/add': 'VenueController.addVenue',
+    'PATCH /venue/:id/update': 'VenueController.updateVenue',
+    'DELETE /venue/:id/delete': 'VenueController.deleteVenue',
+
+
     // Event 
     'GET /events': 'EventController.getEvents',
     'GET /event/:id': 'EventController.getEvent',
@@ -47,6 +55,8 @@ module.exports.routes = {
     'GET /my-event/:id': 'EventController.getMyEvent',
     'PUT /event/initiate': 'EventController.addEvent',
     'PATCH /my-event/:id/upload-banner': 'EventController.uploadBanner',
+    'PATCH /my-event/:id/update-eventname': 'EventController.updateEventName',
+    'PATCH /my-event/:id/update-eventinfo': 'EventController.updateEventInfo',
     'PATCH /event/:eventId/update': 'EventController.updateEvent',
     'PATCH /event/:eventId/approve': 'EventController.approveEvent',
     'DELETE /event/:eventId/delete': 'EventController.deleteEvent',

@@ -9,10 +9,19 @@ module.exports = {
 
   attributes: {
 
-    resourceName: {
+    name: {
       type: 'string',
       required: true,
     },
+    description: {
+      type: 'string',
+      required: false,
+    },
+    quantity: {
+      type: 'number',
+      required: true,
+    },
+
   
     // Access
     eventresource: {

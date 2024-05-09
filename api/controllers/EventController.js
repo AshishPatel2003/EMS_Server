@@ -109,6 +109,7 @@ module.exports = {
         }
     },
 
+    
     uploadBanner: async (req, res) => {
         console.log(req.params.id)
         try {
@@ -129,6 +130,86 @@ module.exports = {
                     return res
                         .status(ResponseCode.CONFLICT)
                         .json({ type: "error", message: "Upload Failed" });
+                }
+            } else {
+                return res
+                        .status(ResponseCode.NOT_FOUND)
+                        .json({ type: "error", message: "Event Not found" });
+            }
+        } catch (error) {
+            return res
+                .status(ResponseCode.SERVER_ERROR)
+                .json({ type: "error", message: error.message });
+        }
+    },
+
+    updateEventName: async (req, res) => {
+        console.log(req.params.id)
+        const {eventName} = req.body;
+        try {
+            const event = await Events.findOne({ id: req.params.id });
+            console.log(event)
+            if (event) {
+                // console.log(event)
+                const oldName = event.eventName;
+                if (oldName != eventName ) {
+                    const eventUpdate = await Events.updateOne(
+                        { id: req.params.id },
+                        { eventName: eventName }
+                    );
+                    if (eventUpdate) {
+                        return res
+                            .status(ResponseCode.OK)
+                            .json({ type: "success", message: "Title Updated"});
+                    } else {
+                        return res
+                            .status(ResponseCode.CONFLICT)
+                            .json({ type: "error", message: "Update Failed" });
+                    }
+                } else {
+                    return res
+                            .status(ResponseCode.CONFLICT)
+                            .json({ type: "error", message: "No Change Made" });
+                }
+            } else {
+                return res
+                        .status(ResponseCode.NOT_FOUND)
+                        .json({ type: "error", message: "Event Not found" });
+            }
+        } catch (error) {
+            return res
+                .status(ResponseCode.SERVER_ERROR)
+                .json({ type: "error", message: error.message });
+        }
+    },
+
+    updateEventInfo: async (req, res) => {
+        console.log(req.params.id)
+        const {description} = req.body;
+        try {
+            const event = await Events.findOne({ id: req.params.id });
+            console.log(event)
+            if (event) {
+                // console.log(event)
+                const old = event.description;
+                if (old != description ) {
+                    const eventUpdate = await Events.updateOne(
+                        { id: req.params.id },
+                        { description: description }
+                    );
+                    if (eventUpdate) {
+                        return res
+                            .status(ResponseCode.OK)
+                            .json({ type: "success", message: "Info Updated"});
+                    } else {
+                        return res
+                            .status(ResponseCode.CONFLICT)
+                            .json({ type: "error", message: "Update Failed" });
+                    }
+                } else {
+                    return res
+                            .status(ResponseCode.CONFLICT)
+                            .json({ type: "error", message: "No Change Made" });
                 }
             } else {
                 return res
