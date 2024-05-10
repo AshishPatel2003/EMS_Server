@@ -35,6 +35,7 @@ const Dependencies = {
     path: require("path"),
     expressValidator: require("express-validator"),
     firebaseAdmin: require("firebase-admin"),
+    nestedPop: require('nested-pop')
 };
 
 const Pages = {

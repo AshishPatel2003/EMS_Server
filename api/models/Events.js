@@ -39,7 +39,6 @@ module.exports = {
     },
     venue: {
       model: 'venues',
-      required: false
     },
     showSeats: {
       type: 'boolean',

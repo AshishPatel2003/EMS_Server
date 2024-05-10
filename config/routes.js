@@ -68,6 +68,7 @@ module.exports.routes = {
     'DELETE /event/:eventId/member/:userId/delete': 'EventMemberController.deleteEventMember',
 
     // Speaker 
+    // 'GET /event/:eventId/speaker': 'SpeakerController.getSpeakers',
     'GET /event/:eventId/speaker': 'SpeakerController.getSpeakers',
     'PUT /event/:eventId/speaker/add': 'SpeakerController.addSpeaker',
     'PATCH /event/:eventId/speaker/:speakerId/update': 'SpeakerController.updateSpeaker',

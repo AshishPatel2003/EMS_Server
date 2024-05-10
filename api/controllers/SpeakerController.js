@@ -17,6 +17,7 @@ module.exports = {
             let allRecords = await Speakers.find({
                 event: req.params.eventId,
             }).populate("event");
+            console.log(allRecords)
             if (allRecords) {
                 res.status(ResponseCode.OK).json(allRecords);
             }
@@ -27,7 +28,7 @@ module.exports = {
 
     addSpeaker: async (req, res) => {
         const { speakerName, speakerImg, designation } = req.body;
-
+        console.log(req.body)
         try {
             await Speakers.findOrCreate(
                 {

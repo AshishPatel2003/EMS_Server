@@ -22,10 +22,10 @@ module.exports = {
         required: true,
       },
 
-    //   event: {
-    //     collection: "eventmembers",
-    //     via: 'eventrole'
-    //   }
+      event: {
+        collection: "events",
+        via: 'venue'
+      }
     },
   };
   

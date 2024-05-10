@@ -6,7 +6,8 @@
  */
 
 const constants = sails.config.constants;
-const { dotenv, jwt, bcrypt, nodemailer, path, ejs } = constants.Dependencies;
+const { dotenv, jwt, bcrypt, nodemailer, path, ejs, nestedPop } =
+    constants.Dependencies;
 
 const ResponseCode = constants.ResponseCode;
 dotenv.config();
@@ -58,9 +59,26 @@ module.exports = {
         try {
             let allRecords = await EventMembers.find({ user: req.user.id })
                 .populate("event")
-                .populate("eventrole");
-            console.log("Events found", allRecords);
+                .populate("eventrole")
+                .then(async function (records) {
+                    let venues = await Venues.find();
+                    if (venues) {
+                        for (let i in records) {
+                            for (let j in venues) {
+                                if ((records[i].event.venue = venues[j].id)) {
+                                    records[i].event.venue = venues[j];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    return records;
+                });
+            console.log("All Records => ", allRecords);
             if (allRecords) {
+                // for (let i in allRecords) {
+                //     let event = await Events.findOne({id: allRecords[i].event.id}).select([id]).populate("venue")
+                // }
                 res.status(ResponseCode.OK).json({
                     type: "success",
                     message: "All Your Event",
@@ -83,10 +101,22 @@ module.exports = {
 
     getMyEvent: async (req, res) => {
         try {
-            let event = await EventMembers.findOne({
+            let event = await EventMembers.find({
                 user: req.user.id,
                 event: req.params.id,
-            }).populate("event");
+            }).limit(1)
+                .populate("event")
+                .populate("eventrole")
+                .then(async function (record) {
+                    console.log("Event record from getMyEvent => ", record)
+                    let venues = await Venues.findOne({
+                        id: record[0].event.venue,
+                    });
+                    if (venues) {
+                        record[0].event.venue = venues;
+                    }
+                    return record[0];
+                });
             console.log("Event found asdfadfads ", event);
             if (event) {
                 res.status(ResponseCode.OK).json({
@@ -109,12 +139,11 @@ module.exports = {
         }
     },
 
-    
     uploadBanner: async (req, res) => {
-        console.log(req.params.id)
+        console.log(req.params.id);
         try {
             const event = await Events.findOne({ id: req.params.id });
-            console.log(event)
+            console.log(event);
             if (event) {
                 // console.log(event)
                 const oldBanner = event.bannerImg;
@@ -123,9 +152,11 @@ module.exports = {
                     { bannerImg: req.body.bannerImg }
                 );
                 if (eventUpdate) {
-                    return res
-                        .status(ResponseCode.OK)
-                        .json({ type: "success", message: "Banner Updated", oldBanner: oldBanner});
+                    return res.status(ResponseCode.OK).json({
+                        type: "success",
+                        message: "Banner Updated",
+                        oldBanner: oldBanner,
+                    });
                 } else {
                     return res
                         .status(ResponseCode.CONFLICT)
@@ -133,8 +164,8 @@ module.exports = {
                 }
             } else {
                 return res
-                        .status(ResponseCode.NOT_FOUND)
-                        .json({ type: "error", message: "Event Not found" });
+                    .status(ResponseCode.NOT_FOUND)
+                    .json({ type: "error", message: "Event Not found" });
             }
         } catch (error) {
             return res
@@ -144,23 +175,24 @@ module.exports = {
     },
 
     updateEventName: async (req, res) => {
-        console.log(req.params.id)
-        const {eventName} = req.body;
+        console.log(req.params.id);
+        const { eventName } = req.body;
         try {
             const event = await Events.findOne({ id: req.params.id });
-            console.log(event)
+            console.log(event);
             if (event) {
                 // console.log(event)
                 const oldName = event.eventName;
-                if (oldName != eventName ) {
+                if (oldName != eventName) {
                     const eventUpdate = await Events.updateOne(
                         { id: req.params.id },
                         { eventName: eventName }
                     );
                     if (eventUpdate) {
-                        return res
-                            .status(ResponseCode.OK)
-                            .json({ type: "success", message: "Title Updated"});
+                        return res.status(ResponseCode.OK).json({
+                            type: "success",
+                            message: "Title Updated",
+                        });
                     } else {
                         return res
                             .status(ResponseCode.CONFLICT)
@@ -168,13 +200,13 @@ module.exports = {
                     }
                 } else {
                     return res
-                            .status(ResponseCode.CONFLICT)
-                            .json({ type: "error", message: "No Change Made" });
+                        .status(ResponseCode.CONFLICT)
+                        .json({ type: "error", message: "No Change Made" });
                 }
             } else {
                 return res
-                        .status(ResponseCode.NOT_FOUND)
-                        .json({ type: "error", message: "Event Not found" });
+                    .status(ResponseCode.NOT_FOUND)
+                    .json({ type: "error", message: "Event Not found" });
             }
         } catch (error) {
             return res
@@ -184,15 +216,15 @@ module.exports = {
     },
 
     updateEventInfo: async (req, res) => {
-        console.log(req.params.id)
-        const {description} = req.body;
+        console.log(req.params.id);
+        const { description } = req.body;
         try {
             const event = await Events.findOne({ id: req.params.id });
-            console.log(event)
+            console.log(event);
             if (event) {
                 // console.log(event)
                 const old = event.description;
-                if (old != description ) {
+                if (old != description) {
                     const eventUpdate = await Events.updateOne(
                         { id: req.params.id },
                         { description: description }
@@ -200,7 +232,7 @@ module.exports = {
                     if (eventUpdate) {
                         return res
                             .status(ResponseCode.OK)
-                            .json({ type: "success", message: "Info Updated"});
+                            .json({ type: "success", message: "Info Updated" });
                     } else {
                         return res
                             .status(ResponseCode.CONFLICT)
@@ -208,13 +240,13 @@ module.exports = {
                     }
                 } else {
                     return res
-                            .status(ResponseCode.CONFLICT)
-                            .json({ type: "error", message: "No Change Made" });
+                        .status(ResponseCode.CONFLICT)
+                        .json({ type: "error", message: "No Change Made" });
                 }
             } else {
                 return res
-                        .status(ResponseCode.NOT_FOUND)
-                        .json({ type: "error", message: "Event Not found" });
+                    .status(ResponseCode.NOT_FOUND)
+                    .json({ type: "error", message: "Event Not found" });
             }
         } catch (error) {
             return res
@@ -223,28 +255,34 @@ module.exports = {
         }
     },
     updateSchedule: async (req, res) => {
-        console.log(req.params.id)
-        const {startTime, endTime, venue, showSeats, maxSeats} = req.body;
+        console.log(req.params.id);
+        const { startTime, endTime, venue, showSeats, maxSeats } = req.body;
         try {
             const event = await Events.findOne({ id: req.params.id });
-            console.log(event)
+            console.log(event);
             if (event) {
                 // console.log(event)
                 const old = event.startTime;
                 // if (old != startTime ) {
-                    const eventUpdate = await Events.updateOne(
-                        { id: req.params.id },
-                        { startTime: startTime, endTime: endTime, venue: venue, showSeats: showSeats, maxSeats: maxSeats }
-                    );
-                    if (eventUpdate) {
-                        return res
-                            .status(ResponseCode.OK)
-                            .json({ type: "success", message: "Schedule Updated"});
-                    } else {
-                        return res
-                            .status(ResponseCode.CONFLICT)
-                            .json({ type: "error", message: "Update Failed" });
+                const eventUpdate = await Events.updateOne(
+                    { id: req.params.id },
+                    {
+                        startTime: startTime,
+                        endTime: endTime,
+                        venue: venue,
+                        showSeats: showSeats,
+                        maxSeats: maxSeats,
                     }
+                );
+                if (eventUpdate) {
+                    return res
+                        .status(ResponseCode.OK)
+                        .json({ type: "success", message: "Schedule Updated" });
+                } else {
+                    return res
+                        .status(ResponseCode.CONFLICT)
+                        .json({ type: "error", message: "Update Failed" });
+                }
                 // } else {
                 //     return res
                 //             .status(ResponseCode.CONFLICT)
@@ -252,8 +290,8 @@ module.exports = {
                 // }
             } else {
                 return res
-                        .status(ResponseCode.NOT_FOUND)
-                        .json({ type: "error", message: "Event Not found" });
+                    .status(ResponseCode.NOT_FOUND)
+                    .json({ type: "error", message: "Event Not found" });
             }
         } catch (error) {
             return res
